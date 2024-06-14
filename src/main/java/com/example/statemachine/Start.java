@@ -9,7 +9,12 @@ public class Start {
     public static void main(String[] args) {
         StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.create();
         builder.externalTransition()
-                .from(States.States1)
-                .to()
+                .from(States.ToBeVerified)
+                .to(States.ToBeMatched)
+                .on(Events.VerificationInvoice)
+                .when(checkCondition())
+                .perform(doAction);
     }
+
+
 }
