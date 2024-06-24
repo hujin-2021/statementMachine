@@ -9,7 +9,11 @@ public enum States {
 
     ToBeManuallyUsed(5, "待手工领用"),
     PartialUse(6, "部分领用"),
-    FullyUsed(7, "完全领用")
+    FullyUsed(7, "完全领用"),
+
+    ToBeReturned(8,"待退回"),
+
+    Returned(9,"已退回")
 
     ;
 
