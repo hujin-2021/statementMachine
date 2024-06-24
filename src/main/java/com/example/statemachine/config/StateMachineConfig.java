@@ -39,7 +39,7 @@ public class StateMachineConfig {
                 .from(States.ToBeVerified)
                 .to(States.VerificationFailed)
                 .on(Events.VerificationInvoice)
-                .when(checkVerificationFailCondition())
+                .when(verificationInvoiceService.verificationFailCondition())
                 .perform(doAction());
 
         //待匹配->待自动领用
@@ -47,7 +47,7 @@ public class StateMachineConfig {
                 .from(States.ToBeMatched)
                 .to(States.ToBeAutoUsed)
                 .on(Events.MatchingInvoiceTaxpayerInvoice)
-                .when(checkMatchingInvoiceTaxpayerSuccessCondition())
+                .when(matchingInvoiceTaxpayerInvoiceService.matchingInvoiceTaxpayerSuccessCondition())
                 .perform(doAction());
 
         //待匹配->待手工领用
@@ -55,7 +55,7 @@ public class StateMachineConfig {
                 .from(States.ToBeMatched)
                 .to(States.ToBeManuallyUsed)
                 .on(Events.MatchingInvoiceTaxpayerInvoice)
-                .when(checkMatchingInvoiceTaxpayerFailCondition())
+                .when(matchingInvoiceTaxpayerInvoiceService.matchingInvoiceTaxpayerFailCondition())
                 .perform(doAction());
 
 
@@ -64,7 +64,7 @@ public class StateMachineConfig {
                 .from(States.ToBeAutoUsed)
                 .to(States.FullyUsed)
                 .on(Events.AutomaticRequisitionInvoice)
-                .when(checkAutomaticRequisitionCondition())
+                .when(automaticRequisitionInvoiceService.AutomaticRequisitionSuccessCondition())
                 .perform(doAction());
 
         StateMachine<States, Events, InvoiceContext> stateMachine=builder.build("stateMachine1");
