@@ -7,6 +7,9 @@ import com.alibaba.cola.statemachine.builder.StateMachineBuilderFactory;
 import com.example.statemachine.InvoiceContext;
 import com.example.statemachine.enums.Events;
 import com.example.statemachine.enums.States;
+import com.example.statemachine.service.AutomaticRequisitionInvoiceService;
+import com.example.statemachine.service.MatchingInvoiceTaxpayerInvoiceService;
+import com.example.statemachine.service.VerificationInvoiceService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,7 +18,11 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class StateMachineConfig {
+    private VerificationInvoiceService verificationInvoiceService;
 
+    private MatchingInvoiceTaxpayerInvoiceService matchingInvoiceTaxpayerInvoiceService;
+
+    private AutomaticRequisitionInvoiceService automaticRequisitionInvoiceService;
     @Bean
     public StateMachine<States, Events,InvoiceContext> stateMachine() {
         StateMachineBuilder<States, Events, InvoiceContext> builder = StateMachineBuilderFactory.create();
@@ -24,7 +31,7 @@ public class StateMachineConfig {
                 .from(States.ToBeVerified)
                 .to(States.ToBeMatched)
                 .on(Events.VerificationInvoice)
-                .when(checkVerificationSuccessCondition())
+                .when(verificationInvoiceService.verificationSuccessCondition())
                 .perform(doAction());
 
         //待验证->验证失败
