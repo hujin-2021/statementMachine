@@ -2,7 +2,7 @@ package com.example.statemachine.service;
 
 import com.alibaba.cola.statemachine.Action;
 import com.alibaba.cola.statemachine.Condition;
-import com.example.statemachine.InvoiceContext;
+
 import com.example.statemachine.context.BaseContext;
 import com.example.statemachine.context.VerificationInvoiceContext;
 import com.example.statemachine.enums.Events;
@@ -20,4 +20,6 @@ public interface VerificationInvoiceService {
     void verifyInvoice(String param);
 
     Action<States, Events, BaseContext> verificationSuccessAction();
+
+    Action<States, Events, BaseContext> verificationFailAction();
 }

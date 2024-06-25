@@ -6,7 +6,7 @@ package com.example.statemachine.job;
 public class MatchingInvoiceTaxpayerInvoiceScanJob extends BaseInvoiceJob{
 
     @Override
-    public void execute(String param){
+    public void execute(String param,String refId){
         matchingInvoiceInvoice(param);
     }
 

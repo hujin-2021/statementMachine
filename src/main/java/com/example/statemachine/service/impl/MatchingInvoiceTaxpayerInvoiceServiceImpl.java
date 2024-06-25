@@ -1,14 +1,15 @@
 package com.example.statemachine.service.impl;
 
 import com.alibaba.cola.statemachine.Condition;
-import com.example.statemachine.InvoiceContext;
 import com.example.statemachine.context.BaseContext;
 import com.example.statemachine.context.MatchingInvoiceTaxpayerInvoiceContext;
 import com.example.statemachine.service.MatchingInvoiceTaxpayerInvoiceService;
+import org.springframework.stereotype.Service;
 
 /**
  * @author hujin
  */
+@Service
 public class MatchingInvoiceTaxpayerInvoiceServiceImpl implements MatchingInvoiceTaxpayerInvoiceService {
     @Override
     public Condition<BaseContext> matchingInvoiceTaxpayerSuccessCondition() {

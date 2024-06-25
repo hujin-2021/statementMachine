@@ -1,7 +1,7 @@
 package com.example.statemachine.service;
 
 import com.alibaba.cola.statemachine.Condition;
-import com.example.statemachine.InvoiceContext;
+
 import com.example.statemachine.context.AutomaticRequisitionInvoiceContext;
 import com.example.statemachine.context.BaseContext;
 

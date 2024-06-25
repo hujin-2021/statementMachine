@@ -6,11 +6,11 @@ package com.example.statemachine.job;
 public class AutomaticRequisitionInvoiceScanJob extends BaseInvoiceJob{
 
     @Override
-    public void execute(String param){
-        requisitionInvoice(param);
+    public void execute(String param,String refId){
+        requisitionInvoice(param,refId);
     }
 
-    public void requisitionInvoice(String param){
+    public void requisitionInvoice(String param,String refId){
 
     }
 }

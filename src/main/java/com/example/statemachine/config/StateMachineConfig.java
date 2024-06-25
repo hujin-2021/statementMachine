@@ -4,13 +4,13 @@ package com.example.statemachine.config;
 import com.alibaba.cola.statemachine.StateMachine;
 import com.alibaba.cola.statemachine.builder.StateMachineBuilder;
 import com.alibaba.cola.statemachine.builder.StateMachineBuilderFactory;
-import com.example.statemachine.InvoiceContext;
 import com.example.statemachine.context.BaseContext;
 import com.example.statemachine.enums.Events;
 import com.example.statemachine.enums.States;
 import com.example.statemachine.service.AutomaticRequisitionInvoiceService;
 import com.example.statemachine.service.MatchingInvoiceTaxpayerInvoiceService;
 import com.example.statemachine.service.VerificationInvoiceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,10 +19,13 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class StateMachineConfig {
+    @Autowired
     private VerificationInvoiceService verificationInvoiceService;
 
+    @Autowired
     private MatchingInvoiceTaxpayerInvoiceService matchingInvoiceTaxpayerInvoiceService;
 
+    @Autowired
     private AutomaticRequisitionInvoiceService automaticRequisitionInvoiceService;
     @Bean
     public StateMachine<States, Events,BaseContext> stateMachine() {
@@ -35,13 +38,13 @@ public class StateMachineConfig {
                 .when(verificationInvoiceService.verificationSuccessCondition())
                 .perform(verificationInvoiceService.verificationSuccessAction());
 
-//        //待验证->验证失败
-//        builder.externalTransition()
-//                .from(States.ToBeVerified)
-//                .to(States.VerificationFailed)
-//                .on(Events.VerificationInvoice)
-//                .when(verificationInvoiceService.verificationFailCondition())
-//                .perform(doVerificationFailAction());
+        //待验证->验证失败
+        builder.externalTransition()
+                .from(States.ToBeVerified)
+                .to(States.VerificationFailed)
+                .on(Events.VerificationInvoice)
+                .when(verificationInvoiceService.verificationFailCondition())
+                .perform(verificationInvoiceService.verificationFailAction());
 //
 //        //待匹配->待自动领用
 //        builder.externalTransition()
