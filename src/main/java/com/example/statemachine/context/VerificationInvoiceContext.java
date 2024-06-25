@@ -4,8 +4,11 @@ package com.example.statemachine.context;
  * @author hujin
  */
 public class VerificationInvoiceContext extends BaseContext{
+
+    //一些条件，用来执行任务
     private String verificationCondition;
 
+    //流水号，用于将同一个请求多次执行时的结果保存在Map的同一个key里，不同的流水号的请求结果在Map里区分开
     private String verificationReferenceId;
     public String getVerificationCondition() {
         return verificationCondition;
