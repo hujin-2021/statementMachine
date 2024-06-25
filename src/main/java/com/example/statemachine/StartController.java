@@ -27,19 +27,19 @@ public class StartController {
     @GetMapping("/testverify")
     public String testVerify(@RequestParam String param,@RequestParam String refId) {
         verificationInvoiceScanJob.execute(param,refId);
-        return "success";
+        return "1";
     }
 
     @GetMapping("/matching")
     public String testMatching(@RequestParam String param,@RequestParam String refId) {
-        verificationInvoiceScanJob.execute(param,refId);
-        return "success";
+        matchingInvoiceTaxpayerInvoiceScanJob.execute(param,refId);
+        return "1";
     }
 
     @GetMapping("/requisition")
     public String testRequisition(@RequestParam String param,@RequestParam String refId) {
-        verificationInvoiceScanJob.execute(param,refId);
-        return "success";
+        automaticRequisitionInvoiceScanJob.execute(param,refId);
+        return "1";
     }
 
 }
