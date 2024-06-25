@@ -45,31 +45,32 @@ public class StateMachineConfig {
                 .on(Events.VerificationInvoice)
                 .when(verificationInvoiceService.verificationFailCondition())
                 .perform(verificationInvoiceService.verificationFailAction());
-//
-//        //待匹配->待自动领用
-//        builder.externalTransition()
-//                .from(States.ToBeMatched)
-//                .to(States.ToBeAutoUsed)
-//                .on(Events.MatchingInvoiceTaxpayerInvoice)
-//                .when(matchingInvoiceTaxpayerInvoiceService.matchingInvoiceTaxpayerSuccessCondition())
-//                .perform(doAction());
-//
-//        //待匹配->待手工领用
-//        builder.externalTransition()
-//                .from(States.ToBeMatched)
-//                .to(States.ToBeManuallyUsed)
-//                .on(Events.MatchingInvoiceTaxpayerInvoice)
-//                .when(matchingInvoiceTaxpayerInvoiceService.matchingInvoiceTaxpayerFailCondition())
-//                .perform(doAction());
-//
-//
-//        //待自动领用->完全领用
-//        builder.externalTransition()
-//                .from(States.ToBeAutoUsed)
-//                .to(States.FullyUsed)
-//                .on(Events.AutomaticRequisitionInvoice)
-//                .when(automaticRequisitionInvoiceService.AutomaticRequisitionSuccessCondition())
-//                .perform(doAction());
+
+
+        //待匹配->待自动领用
+        builder.externalTransition()
+                .from(States.ToBeMatched)
+                .to(States.ToBeAutoUsed)
+                .on(Events.MatchingInvoiceTaxpayerInvoice)
+                .when(matchingInvoiceTaxpayerInvoiceService.matchingInvoiceTaxpayerSuccessCondition())
+                .perform(matchingInvoiceTaxpayerInvoiceService.matchingSuccessAction());
+
+        //待匹配->待手工领用
+        builder.externalTransition()
+                .from(States.ToBeMatched)
+                .to(States.ToBeManuallyUsed)
+                .on(Events.MatchingInvoiceTaxpayerInvoice)
+                .when(matchingInvoiceTaxpayerInvoiceService.matchingInvoiceTaxpayerFailCondition())
+                .perform(matchingInvoiceTaxpayerInvoiceService.matchingFailAction());
+
+
+        //待自动领用->完全领用
+        builder.externalTransition()
+                .from(States.ToBeAutoUsed)
+                .to(States.FullyUsed)
+                .on(Events.AutomaticRequisitionInvoice)
+                .when(automaticRequisitionInvoiceService.AutomaticRequisitionSuccessCondition())
+                .perform(automaticRequisitionInvoiceService.automaticRequisitionSuccessAction());
 
         StateMachine<States, Events, BaseContext> stateMachine=builder.build("stateMachine1");
         stateMachine.showStateMachine();

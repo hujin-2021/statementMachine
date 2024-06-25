@@ -18,7 +18,7 @@ import java.util.HashMap;
  */
 @Service
 public class VerificationInvoiceServiceImpl implements VerificationInvoiceService {
-    private HashMap<String,Boolean> conditions=new HashMap<>();
+    private HashMap<String,Boolean> verificationConditions=new HashMap<>();
 
     @Override
     public Condition<BaseContext> verificationSuccessCondition() {
@@ -27,11 +27,10 @@ public class VerificationInvoiceServiceImpl implements VerificationInvoiceServic
             public boolean isSatisfied(BaseContext ctx) {
                 if(ctx instanceof VerificationInvoiceContext){
                     Boolean sucessFlag=false;
-                    System.out.println("根据context的参数去执行流转过程的处理，最终更改ctx里的标志位表明结果");
-                    if(!conditions.containsKey("key_generated_by_ctx"+((VerificationInvoiceContext) ctx).getVerificationReferenceId())){
+                    if(!verificationConditions.containsKey("key_generated_by_ctx"+((VerificationInvoiceContext) ctx).getVerificationReferenceId())){
                         checkVerificationResult((VerificationInvoiceContext) ctx);
                     }
-                    sucessFlag=conditions.get("key_generated_by_ctx"+((VerificationInvoiceContext) ctx).getVerificationReferenceId());
+                    sucessFlag=verificationConditions.get("key_generated_by_ctx"+((VerificationInvoiceContext) ctx).getVerificationReferenceId());
                     return sucessFlag;
                 }else{
                     return false;
@@ -42,10 +41,10 @@ public class VerificationInvoiceServiceImpl implements VerificationInvoiceServic
     public void checkVerificationResult(VerificationInvoiceContext ctx){
         //执行发票校验的各种流程，并将结果保存到map
         if("verificationSuccess".equals(ctx.getCondition())){
-            conditions.put("key_generated_by_ctx"+((VerificationInvoiceContext) ctx).getVerificationReferenceId(),true);
+            verificationConditions.put("key_generated_by_ctx"+ ctx.getVerificationReferenceId(),true);
             System.out.println("校验结果为成功");
         }else{
-            conditions.put("key_generated_by_ctx"+((VerificationInvoiceContext) ctx).getVerificationReferenceId(),false);
+            verificationConditions.put("key_generated_by_ctx"+ctx.getVerificationReferenceId(),false);
             System.out.println("校验结果为失败");
         }
 
@@ -58,10 +57,10 @@ public class VerificationInvoiceServiceImpl implements VerificationInvoiceServic
             public boolean isSatisfied(BaseContext ctx) {
                 if(ctx instanceof VerificationInvoiceContext){
                     Boolean failFlag=false;
-                    if(!conditions.containsKey("key_generated_by_ctx"+((VerificationInvoiceContext) ctx).getVerificationReferenceId())){
+                    if(!verificationConditions.containsKey("key_generated_by_ctx"+((VerificationInvoiceContext) ctx).getVerificationReferenceId())){
                         checkVerificationResult((VerificationInvoiceContext) ctx);
                     }
-                    failFlag=conditions.get("key_generated_by_ctx"+((VerificationInvoiceContext) ctx).getVerificationReferenceId());
+                    failFlag=verificationConditions.get("key_generated_by_ctx"+((VerificationInvoiceContext) ctx).getVerificationReferenceId());
                     return !failFlag;
                 }else{
                     return false;
@@ -70,17 +69,11 @@ public class VerificationInvoiceServiceImpl implements VerificationInvoiceServic
         };
     }
 
-    @Override
-    public void verifyInvoice(String param) {
-
-    }
-
 
     public Action<States, Events, BaseContext> verificationSuccessAction() {
         return (from, to, event, ctx) -> {
             System.out.println(
                     " from:" + from + " to:" + to + " on:" + event);
-            System.out.println("开始保存数据、保存日志、将状态保存到数据库");
             writeDbAndLog();
         };
     }
@@ -90,7 +83,6 @@ public class VerificationInvoiceServiceImpl implements VerificationInvoiceServic
         return (from, to, event, ctx) -> {
             System.out.println(
                     " from:" + from + " to:" + to + " on:" + event);
-            System.out.println("校验失败，执行后续收尾流程");
             cleanFailData();
         };
     }
