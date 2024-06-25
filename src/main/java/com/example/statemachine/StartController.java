@@ -1,5 +1,9 @@
 package com.example.statemachine;
 
+import com.alibaba.cola.statemachine.StateMachine;
+import com.example.statemachine.context.BaseContext;
+import com.example.statemachine.enums.Events;
+import com.example.statemachine.enums.States;
 import com.example.statemachine.job.AutomaticRequisitionInvoiceScanJob;
 import com.example.statemachine.job.MatchingInvoiceTaxpayerInvoiceScanJob;
 import com.example.statemachine.job.VerificationInvoiceScanJob;
@@ -24,6 +28,9 @@ public class StartController {
     @Autowired
     AutomaticRequisitionInvoiceScanJob automaticRequisitionInvoiceScanJob;
 
+    @Autowired
+    StateMachine<States, Events, BaseContext> stateMachine;
+
     @GetMapping("/testverify")
     public String testVerify(@RequestParam String param,@RequestParam String refId) {
         verificationInvoiceScanJob.execute(param,refId);
@@ -42,4 +49,9 @@ public class StartController {
         return "1";
     }
 
+    @GetMapping("/uml")
+    public String testRequisition() {
+        String plantUML = stateMachine.generatePlantUML();
+        return plantUML;
+    }
 }
