@@ -2,6 +2,8 @@ package com.example.statemachine.service.impl;
 
 import com.alibaba.cola.statemachine.Condition;
 import com.example.statemachine.InvoiceContext;
+import com.example.statemachine.context.BaseContext;
+import com.example.statemachine.context.MatchingInvoiceTaxpayerInvoiceContext;
 import com.example.statemachine.service.MatchingInvoiceTaxpayerInvoiceService;
 
 /**
@@ -9,21 +11,29 @@ import com.example.statemachine.service.MatchingInvoiceTaxpayerInvoiceService;
  */
 public class MatchingInvoiceTaxpayerInvoiceServiceImpl implements MatchingInvoiceTaxpayerInvoiceService {
     @Override
-    public Condition<InvoiceContext> matchingInvoiceTaxpayerSuccessCondition() {
-        return new Condition<InvoiceContext>() {
+    public Condition<BaseContext> matchingInvoiceTaxpayerSuccessCondition() {
+        return new Condition<BaseContext>() {
             @Override
-            public boolean isSatisfied(InvoiceContext invoiceContext) {
-                return "success".equals(invoiceContext.getMatchingInvoiceTaxpayerCondition());
+            public boolean isSatisfied(BaseContext ctx) {
+                if(ctx instanceof MatchingInvoiceTaxpayerInvoiceContext){
+                    return "matchingInvoiceTaxpayerSuccess".equals(ctx.getCondition());
+                }else {
+                    return false;
+                }
             }
         };
     }
 
     @Override
-    public Condition<InvoiceContext> matchingInvoiceTaxpayerFailCondition() {
-        return new Condition<InvoiceContext>() {
+    public Condition<BaseContext> matchingInvoiceTaxpayerFailCondition() {
+        return new Condition<BaseContext>() {
             @Override
-            public boolean isSatisfied(InvoiceContext invoiceContext) {
-                return "fail".equals(invoiceContext.getMatchingInvoiceTaxpayerCondition());
+            public boolean isSatisfied(BaseContext ctx) {
+                if(ctx instanceof MatchingInvoiceTaxpayerInvoiceContext){
+                    return "matchingInvoiceTaxpayerSuccess".equals(ctx.getCondition());
+                }else {
+                    return false;
+                }
             }
         };
     }

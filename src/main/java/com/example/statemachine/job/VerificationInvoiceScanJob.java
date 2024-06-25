@@ -1,20 +1,21 @@
 package com.example.statemachine.job;
 
 import com.example.statemachine.enums.States;
+import com.example.statemachine.service.VerificationInvoiceService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author hujin
  */
+@Component
 public class VerificationInvoiceScanJob extends BaseInvoiceJob{
+
+    @Autowired
+    VerificationInvoiceService verificationInvoiceService;
     @Override
     public void execute(String param){
-        States target = stateMachine.fireEvent(States.STATE2, Events.EVENT1, new Context());
-
-        verifyInvoice(param);
-    }
-
-    public void verifyInvoice(String param){
-
+        verificationInvoiceService.verifyInvoice(param);
     }
 
 }

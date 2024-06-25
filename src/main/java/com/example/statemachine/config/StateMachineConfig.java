@@ -5,6 +5,7 @@ import com.alibaba.cola.statemachine.StateMachine;
 import com.alibaba.cola.statemachine.builder.StateMachineBuilder;
 import com.alibaba.cola.statemachine.builder.StateMachineBuilderFactory;
 import com.example.statemachine.InvoiceContext;
+import com.example.statemachine.context.BaseContext;
 import com.example.statemachine.enums.Events;
 import com.example.statemachine.enums.States;
 import com.example.statemachine.service.AutomaticRequisitionInvoiceService;
@@ -24,8 +25,8 @@ public class StateMachineConfig {
 
     private AutomaticRequisitionInvoiceService automaticRequisitionInvoiceService;
     @Bean
-    public StateMachine<States, Events,InvoiceContext> stateMachine() {
-        StateMachineBuilder<States, Events, InvoiceContext> builder = StateMachineBuilderFactory.create();
+    public StateMachine<States, Events,BaseContext> stateMachine() {
+        StateMachineBuilder<States, Events, BaseContext> builder = StateMachineBuilderFactory.create();
         // 在这里配置状态机的状态和事件
         builder.externalTransition()
                 .from(States.ToBeVerified)
@@ -67,7 +68,7 @@ public class StateMachineConfig {
                 .when(automaticRequisitionInvoiceService.AutomaticRequisitionSuccessCondition())
                 .perform(doAction());
 
-        StateMachine<States, Events, InvoiceContext> stateMachine=builder.build("stateMachine1");
+        StateMachine<States, Events, BaseContext> stateMachine=builder.build("stateMachine1");
         stateMachine.showStateMachine();
         return stateMachine;
     }

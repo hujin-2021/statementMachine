@@ -5,4 +5,6 @@ package com.example.statemachine.context;
  */
 public abstract class BaseContext {
 
+    public abstract String getCondition();
+
 }

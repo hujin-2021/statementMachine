@@ -4,6 +4,8 @@ import com.alibaba.cola.statemachine.Action;
 import com.alibaba.cola.statemachine.Condition;
 import com.alibaba.cola.statemachine.StateMachine;
 import com.example.statemachine.InvoiceContext;
+import com.example.statemachine.context.BaseContext;
+import com.example.statemachine.context.VerificationInvoiceContext;
 import com.example.statemachine.enums.Events;
 import com.example.statemachine.enums.States;
 import com.example.statemachine.service.VerificationInvoiceService;
@@ -18,21 +20,29 @@ public class VerificationInvoiceServiceImpl implements VerificationInvoiceServic
     @Autowired
     private StateMachine<States, Events,InvoiceContext> stateMachine;
     @Override
-    public Condition<InvoiceContext> verificationSuccessCondition() {
-        return new Condition<InvoiceContext>() {
+    public Condition<BaseContext> verificationSuccessCondition() {
+        return new Condition<BaseContext>() {
             @Override
-            public boolean isSatisfied(InvoiceContext invoiceContext) {
-                return "success".equals(invoiceContext.getVerificationCondition());
+            public boolean isSatisfied(BaseContext ctx) {
+                if(ctx instanceof VerificationInvoiceContext){
+                    return "verificationSuccess".equals(ctx.getCondition());
+                }else{
+                    return false;
+                }
             }
         };
     }
 
     @Override
-    public Condition<InvoiceContext> verificationFailCondition() {
-        return new Condition<InvoiceContext>() {
+    public Condition<BaseContext> verificationFailCondition() {
+        return new Condition<BaseContext>() {
             @Override
-            public boolean isSatisfied(InvoiceContext invoiceContext) {
-                return "fail".equals(invoiceContext.getVerificationCondition());
+            public boolean isSatisfied(BaseContext ctx) {
+                if(ctx instanceof VerificationInvoiceContext){
+                    return "verificationSuccess".equals(ctx.getCondition());
+                }else{
+                    return false;
+                }
             }
         };
     }
@@ -43,7 +53,7 @@ public class VerificationInvoiceServiceImpl implements VerificationInvoiceServic
     }
 
 
-    public Action<States, Events, InvoiceContext> verifySuccessAction() {
+    public Action<States, Events, VerificationInvoiceContext> verifySuccessAction() {
         return (from, to, event, ctx) -> {
             System.out.println(
                     " from:" + from + " to:" + to + " on:" + event);

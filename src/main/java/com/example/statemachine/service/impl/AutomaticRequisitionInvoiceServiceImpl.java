@@ -2,6 +2,8 @@ package com.example.statemachine.service.impl;
 
 import com.alibaba.cola.statemachine.Condition;
 import com.example.statemachine.InvoiceContext;
+import com.example.statemachine.context.AutomaticRequisitionInvoiceContext;
+import com.example.statemachine.context.BaseContext;
 import com.example.statemachine.service.AutomaticRequisitionInvoiceService;
 
 /**
@@ -9,21 +11,29 @@ import com.example.statemachine.service.AutomaticRequisitionInvoiceService;
  */
 public class AutomaticRequisitionInvoiceServiceImpl implements AutomaticRequisitionInvoiceService {
     @Override
-    public Condition<InvoiceContext> AutomaticRequisitionSuccessCondition() {
-        return new Condition<InvoiceContext>() {
+    public Condition<BaseContext> AutomaticRequisitionSuccessCondition() {
+        return new Condition<BaseContext>() {
             @Override
-            public boolean isSatisfied(InvoiceContext invoiceContext) {
-                return "success".equals(invoiceContext.getAutomaticRequisitionCondition());
+            public boolean isSatisfied(BaseContext ctx) {
+                if(ctx instanceof AutomaticRequisitionInvoiceContext){
+                    return "automaticRequisitionSuccess".equals(ctx.getCondition());
+                }else{
+                    return false;
+                }
             }
         };
     }
 
     @Override
-    public Condition<InvoiceContext> AutomaticRequisitionFailCondition() {
-        return new Condition<InvoiceContext>() {
+    public Condition<BaseContext> AutomaticRequisitionFailCondition() {
+        return new Condition<BaseContext>() {
             @Override
-            public boolean isSatisfied(InvoiceContext invoiceContext) {
-                return "fail".equals(invoiceContext.getAutomaticRequisitionCondition());
+            public boolean isSatisfied(BaseContext ctx) {
+                if(ctx instanceof AutomaticRequisitionInvoiceContext){
+                    return "automaticRequisitionSuccess".equals(ctx.getCondition());
+                }else{
+                    return false;
+                }
             }
         };
     }
