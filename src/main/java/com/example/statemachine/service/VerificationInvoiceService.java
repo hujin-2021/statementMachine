@@ -16,7 +16,8 @@ public interface VerificationInvoiceService {
 
     Condition<BaseContext> verificationFailCondition();
 
+
     void verifyInvoice(String param);
 
-    Action<States, Events, VerificationInvoiceContext> verifySuccessAction();
+    Action<States, Events, BaseContext> verificationSuccessAction();
 }
